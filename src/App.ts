@@ -1,5 +1,8 @@
 import express, { Application } from 'express'
 import morgan from 'morgan'
+import TweetRoute from './routes/tweet.route'
+import SignupRoute from "./routes/signup.route"
+
 
 // Routes
 import IndexRoutes from './routes/index.route'
@@ -23,12 +26,14 @@ export class App {
     }
 // private method to setting up the middleware to handle json responses, one for dev and one for prod
     private middlewares() {
-        this.app.use(morgan('dev'));
         this.app.use(express.json());
     }
 // private method for setting up routes in their basic sense (ie. any route that performs an action on profiles starts with /profiles)
     private routes() {
         this.app.use(IndexRoutes);
+        this.app.use("/apis/tweet", TweetRoute);
+        this.app.use("apis/sign-up", SignupRoute)
+
     }
 // starts the server and tells the terminal to post a message that the server is running and on what port
     async listen(): Promise<void> {
