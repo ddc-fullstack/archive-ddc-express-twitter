@@ -6,19 +6,15 @@ const jwt = require('jsonwebtoken');
 interface HashedPassword {
     hash: string,
     salt: string,
-
 }
-
-
 
 export function setPassword(password: string) : HashedPassword {
     const salt = crypto.randomBytes(16);
     const hash = crypto.pbkdf2Sync(password, salt, 238722, 512, "sha512").toString("hex");
     return {hash, salt}
-
 }
 
-export function validatePassword(password: string, profile: Profile, salt: string) : boolean {
+export function validatePassword(password: string, profile: Profile) : boolean {
     const unprovenHash  = crypto.pbkdf2Sync(password, salt, 238722, 512, "sha512").toString("hex");
     return unprovenHash === profile.profileHash;
 }
