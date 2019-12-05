@@ -8,17 +8,6 @@ interface HashedPassword {
     salt: string,
 }
 
-export function setPassword(password: string) : HashedPassword {
-    const salt = crypto.randomBytes(16);
-    const hash = crypto.pbkdf2Sync(password, salt, 238722, 512, "sha512").toString("hex");
-    return {hash, salt}
-}
-
-export function validatePassword(password: string, profile: Profile) : boolean {
-    const unprovenHash  = crypto.pbkdf2Sync(password, salt, 238722, 512, "sha512").toString("hex");
-    return unprovenHash === profile.profileHash;
-}
-
 export function generateJwt(profile : Profile) : any {
     const today = new Date();
     const expirationDate = new Date(today);
@@ -30,3 +19,22 @@ export function generateJwt(profile : Profile) : any {
         exp: expirationDate.getTime() / 1000
     }, 'secret');
 }
+
+export function setActivationToken() : string {
+    return crypto.randomBytes(16)
+}
+
+export function setPassword(password: string) : HashedPassword {
+    const salt = crypto.randomBytes(16);
+    const hash = crypto.pbkdf2Sync(password, salt, 238722, 512, "sha512").toString("hex");
+    return {hash, salt}
+}
+
+export function validatePassword(password: string, profile: Profile) : boolean {
+    const unprovenHash  = crypto.pbkdf2Sync(password, profile.profileSalt, 238722, 512, "sha512").toString("hex");
+    return unprovenHash === profile.profileHash;
+}
+
+
+
+

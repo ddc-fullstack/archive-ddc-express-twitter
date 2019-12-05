@@ -4,11 +4,11 @@ services:
   sql:
     build: ./sql
     volumes:
-      - ddc-twitter-sql:/var/lib/mysql
+      - passport-local:/var/lib/mysql
     env_file:
       - ./docker-compose.env
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - 3306:3306
 volumes:
-  ddc-twitter-sql:
+  passport-local:

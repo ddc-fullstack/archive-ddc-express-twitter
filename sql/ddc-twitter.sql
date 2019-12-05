@@ -19,8 +19,9 @@ CREATE TABLE profile (
 	-- to make sure duplicate data cannot exist, create a unique index
 	profileEmail VARCHAR(128) NOT NULL,
 	-- to make something optional, exclude the not null
-	profileHash CHAR(97) NOT NULL,
+	profileHash CHAR(512) NOT NULL,
 	profilePhone VARCHAR(32),
+	profileSalt CHAR(32)
 	UNIQUE(profileEmail),
 	UNIQUE(profileAtHandle),
 	-- this officiates the primary key for the entity
