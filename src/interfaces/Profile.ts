@@ -1,5 +1,5 @@
 export interface Profile {
-    profileId  : string|null,
+    profileId : string|null,
     profileActivationToken : string|null,
     profileAtHandle: string,
     profileAvatarUrl: string,

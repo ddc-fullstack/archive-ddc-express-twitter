@@ -1,12 +1,12 @@
-import { Router } from 'express'
-import { signupProfile } from '../controllers/signup.controller'
-import { signupValidator } from '../validators/signup.validator'
-import { asyncValidator } from '../lib/asyncValidator'
+import { Router } from 'express';
+import { signupProfile } from '../controllers/signup.controller';
+import { signupValidator } from '../validators/signup.validator';
+import { asyncValidator } from '../lib/asyncValidator';
 const { checkSchema } = require('express-validator');
 
 const router = Router();
 
 router.route('/')
-    .post(asyncValidator(checkSchema(signupValidator)), signupProfile)
+  .post(asyncValidator(checkSchema(signupValidator)), signupProfile);
 
-export default router
+export default router;

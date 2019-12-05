@@ -8,6 +8,19 @@
     "dev": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\"",
     "test": "echo \\\"Error: no src/test specified\\\" && exit 1"
   },
+  "eslintConfig": {
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "error",
+      "semi": [2, "always"]
+    }
+  },
+  "standardx": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
+  },
   "keywords": [],
   "author": "George Kephart",
   "license": "Apache-2.0",
@@ -29,8 +42,11 @@
     "@types/mysql2": "github:types/mysql2",
     "@types/passport": "^1.0.2",
     "@types/passport-local": "^1.0.33",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.11",
+    "standardx": "^5.0.0",
     "typescript": "^3.5.3"
   }
 }
