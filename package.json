@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc && node dist/index.js",
+    "compile": "ts-node src/index.ts",
     "dev": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\"",
     "test": "echo \\\"Error: no src/test specified\\\" && exit 1",
-    "clean" : " standardx --fix --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin **/*.ts",
-    "lint" : " standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin **/*.ts"
+    "clean": " standardx --fix --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin **/*.ts",
+    "lint": " standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin **/*.ts"
   },
   "eslintConfig": {
     "rules": {
@@ -20,14 +20,12 @@
       ]
     }
   },
-
   "standardx": {
     "parser": "@typescript-eslint/parser",
     "plugins": [
       "@typescript-eslint/eslint-plugin"
     ]
   },
-
   "keywords": [],
   "author": "George Kephart",
   "license": "Apache-2.0",
@@ -36,10 +34,10 @@
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-jwt": "^5.3.1",
     "express-validator": "^6.3.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
+    "node-ts": "^5.0.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "ts-node": "^8.5.4"

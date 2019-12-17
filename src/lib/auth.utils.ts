@@ -31,6 +31,15 @@ export async function setPassword (password: string) : Promise<string> {
     });
 }
 
+export const getTokenFromHeaders = (request : Request) => {
+  const { headers: { authorization } } = request;
+
+  if (authorization && authorization.split(' ')[0] === 'Token') {
+    return authorization.split(' ')[1];
+  }
+  return null;
+};
+
 export async function validatePassword (hash: string, password: string) : Promise<boolean> {
   return argon2.verify(
     hash,
@@ -41,12 +50,3 @@ export async function validatePassword (hash: string, password: string) : Promis
       hashLength: 32
     });
 }
-
-export const getTokenFromHeaders = (request : Request) => {
-  const { headers: { authorization } } = request;
-
-  if (authorization && authorization.split(' ')[0] === 'Token') {
-    return authorization.split(' ')[1];
-  }
-  return null;
-};
