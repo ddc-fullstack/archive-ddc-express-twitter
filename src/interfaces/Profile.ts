@@ -6,5 +6,4 @@ export interface Profile {
     profileEmail: string,
     profileHash: string,
     profilePhone: string,
-    profileSalt: string
 }

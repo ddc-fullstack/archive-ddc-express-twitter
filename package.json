@@ -6,29 +6,37 @@
   "scripts": {
     "compile": "tsc && node dist/index.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run compile\"",
-    "test": "echo \\\"Error: no src/test specified\\\" && exit 1"
+    "test": "echo \\\"Error: no src/test specified\\\" && exit 1",
+    "clean" : " standardx --fix --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin **/*.ts",
+    "lint" : " standardx --parser @typescript-eslint/parser --plugin @typescript-eslint/eslint-plugin **/*.ts"
   },
   "eslintConfig": {
     "rules": {
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error",
-      "semi": [2, "always"]
+      "semi": [
+        2,
+        "always"
+      ]
     }
   },
+
   "standardx": {
     "parser": "@typescript-eslint/parser",
     "plugins": [
       "@typescript-eslint/eslint-plugin"
     ]
   },
+
   "keywords": [],
   "author": "George Kephart",
   "license": "Apache-2.0",
-  "repository": "",
   "dependencies": {
+    "argon2": "^0.25.1",
     "crypto": "^1.0.1",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
     "express-validator": "^6.3.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",

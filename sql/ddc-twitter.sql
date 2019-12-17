@@ -6,8 +6,8 @@
 DROP TABLE IF EXISTS `like`;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS tweet;
-DROP TABLE IF EXISTS profile;
--- the CREATE TABLE function is a function that takes tons of arguments to layout the table's schema
+DROP TABLE IF EXISTS `profile`;
+
 CREATE TABLE profile (
 	-- this creates the attribute for the primary key
 	-- auto_increment tells mySQL to number them {1, 2, 3, ...}
@@ -19,9 +19,8 @@ CREATE TABLE profile (
 	-- to make sure duplicate data cannot exist, create a unique index
 	profileEmail VARCHAR(128) NOT NULL,
 	-- to make something optional, exclude the not null
-	profileHash CHAR(512) NOT NULL,
+	profileHash CHAR(97) NOT NULL,
 	profilePhone VARCHAR(32),
-	profileSalt CHAR(32)
 	UNIQUE(profileEmail),
 	UNIQUE(profileAtHandle),
 	-- this officiates the primary key for the entity

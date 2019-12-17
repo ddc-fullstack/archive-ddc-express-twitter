@@ -3,7 +3,7 @@ import { indexWelcome } from '../controllers/index.controller';
 
 const router = Router();
 
-router.route('/api')
+router.route('/apis')
   .get(indexWelcome);
 
 export default router;

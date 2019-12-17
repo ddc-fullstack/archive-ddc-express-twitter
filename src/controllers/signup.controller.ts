@@ -11,10 +11,15 @@ const { validationResult } = require('express-validator');
 
 export async function signupProfile (request: Request, response: Response) {
   try {
+
     validationResult(request).throw();
+
     const { profileAtHandle, profileAvatarUrl, profileEmail, profilePhone, profilePassword } = request.body;
+
     const mysqlConnection = await connect();
-    const { hash, salt } = setPassword(profilePassword);
+
+    const profileHash = await setPassword(profilePassword);
+
     const profileActivationToken = setActivationToken();
 
     const profile : Profile = {
@@ -23,21 +28,29 @@ export async function signupProfile (request: Request, response: Response) {
       profileAtHandle,
       profileAvatarUrl,
       profileEmail,
-      profileHash: hash,
-      profileSalt: salt,
+      profileHash,
       profilePhone
     };
 
-    const query : string = 'INSERT INTO profile(profileId, profileActivationToken, profileAtHandle, profileAvatarUrl,  profileEmail, profileHash, profilePhone, profileSalt ) VALUES (UUID_TO_BIN(UUID()) , :profileActivationToken, :profileAtHandle, :profileAvatarUrl, :profileEmail, :profileHash, :profilePhone, :profileSalt)';
+    const query : string = 'INSERT INTO profile(profileId, profileActivationToken, profileAtHandle, profileAvatarUrl,  profileEmail, profileHash, profilePhone ) VALUES (UUID_TO_BIN(UUID()) , :profileActivationToken, :profileAtHandle, :profileAvatarUrl, :profileEmail, :profileHash, :profilePhone)';
 
     await mysqlConnection.execute(query, profile);
     const status: Status = {
       status: 200,
-      message: 'Tweet Updated',
+      message: 'Profile Successfully Created',
       data: null
     };
+
     return response.json(status);
   } catch (error) {
-    console.log();
+
+    const status : Status = {
+      status: 400,
+      message: error.message,
+      data: null
+    };
+
+
+    return response.json(status)
   }
 }
