@@ -1,6 +1,5 @@
-# ddc-javascript-twitter
-The example application we use in the Fullstack Application.  Contains helpful examples for students.
-
+# Passport Freecodecamp tutorial
+sandbox to play around with auth and session managament in Express
 ## Set Up
 **The following files are required to start a new project based on this code base**
 1. src/controllers/index.controller.ts
