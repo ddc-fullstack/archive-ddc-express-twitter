@@ -7,6 +7,7 @@ import {Profile} from "../interfaces/Profile";
 const passport = require("passport");
 const { validationResult } = require('express-validator');
 
+
 export async function signIn(request : Request, response: Response, nextFunction : NextFunction) {
 
 
