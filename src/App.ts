@@ -6,9 +6,8 @@ import morgan from 'morgan';
 // Routes
 import IndexRoutes from './routes/index.route';
 import { SignInRouter } from './routes/sign-in.route';
-import {passportMiddleware} from "./lib/auth.controller";
-import passport = require("passport");
-
+import { passportMiddleware } from './lib/auth.controller';
+import passport = require('passport');
 
 // The following class creates the app and instantiates the server
 export class App {
@@ -17,14 +16,11 @@ export class App {
     constructor (
         private port?: number | string
     ) {
-
-        passportMiddleware
-
+      passportMiddleware; // eslint-disable-line
       this.app = express();
       this.settings();
       this.middlewares();
       this.routes();
-
     }
 
     // private method that sets the port for the sever, to one from index.route.ts, and external .env file or defaults to 3000
@@ -36,8 +32,7 @@ export class App {
     private middlewares () {
       this.app.use(morgan('dev'));
       this.app.use(express.json());
-        this.app.use(passport.initialize())
-
+      this.app.use(passport.initialize());
     }
 
     // private method for setting up routes in their basic sense (ie. any route that performs an action on profiles starts with /profiles)

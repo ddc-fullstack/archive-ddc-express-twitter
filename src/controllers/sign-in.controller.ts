@@ -1,8 +1,9 @@
 import {NextFunction, Request, Response} from 'express';
 import { Status } from '../interfaces/Status';
 import {body} from "express-validator";
-import {validatePassword} from "../lib/auth.utils";
+import {generateJwt, validatePassword} from "../lib/auth.utils";
 import {Profile} from "../interfaces/Profile";
+
 const passport = require("passport");
 const { validationResult } = require('express-validator');
 
@@ -19,15 +20,28 @@ export async function signIn(request : Request, response: Response, nextFunction
             {session: false},
             async (err: any, passportUser: Profile) => {
 
-                const isPasswordValid = passportUser && await validatePassword(passportUser.profileHash, profilePassword);
 
-               return isPasswordValid
-                   ? response.json({status:200, data:null, message: "sign in successful"})
-                   : response.json({status: 400, data:null, message: "incorrect username or password"})
+
+                const signInSuccessful = () => {
+                    response.header({"X-JWT-TOKEN": generateJwt(passportUser)});
+                    return response.json({status:200, data:null, message: "sign in successful"})
+                };
+
+                const signInFailed = () => response.json({status: 400, data:null, message: "incorrect username or password"});
+
+                const isPasswordValid : boolean = passportUser && await validatePassword(passportUser.profileHash, profilePassword);
+
+
+                return isPasswordValid
+                 ? signInSuccessful()
+                 : signInFailed()
+
+
+
 
         })(request, response, nextFunction)
     } catch (error) {
-        return response.json("Morty")
+        return response.json({status:500, data: null, message: error.message})
 
     }
 }
