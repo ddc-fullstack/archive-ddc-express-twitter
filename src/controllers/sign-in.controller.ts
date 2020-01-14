@@ -21,8 +21,6 @@ export async function signIn(request : Request, response: Response, nextFunction
             {session: false},
             async (err: any, passportUser: Profile) => {
 
-
-
                 const signInSuccessful = () => {
                     response.header({"X-JWT-TOKEN": generateJwt(passportUser)});
                     return response.json({status:200, data:null, message: "sign in successful"})
@@ -32,14 +30,7 @@ export async function signIn(request : Request, response: Response, nextFunction
 
                 const isPasswordValid : boolean = passportUser && await validatePassword(passportUser.profileHash, profilePassword);
 
-
-                return isPasswordValid
-                 ? signInSuccessful()
-                 : signInFailed()
-
-
-
-
+                return isPasswordValid ? signInSuccessful() : signInFailed();
         })(request, response, nextFunction)
     } catch (error) {
         return response.json({status:500, data: null, message: error.message})

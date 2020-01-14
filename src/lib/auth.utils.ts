@@ -3,23 +3,27 @@ import { Request } from 'express';
 import * as argon2 from 'argon2';
 
 const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
+const {sign} = require('jsonwebtoken');
 
 export function generateJwt (profile : Profile) : any {
-  const today = new Date();
-  const expirationDate = new Date(today);
-  expirationDate.setDate(today.getDate() + 60);
+    const {profileId, profileEmail} = profile;
 
-  return jwt.sign({
-    profileEmail: profile.profileEmail,
-    ProfileId: profile.profileId,
-    exp: expirationDate.getTime() / 1000
-  }, 'secret');
+    const setExpInSecondsSinceEpoch = (currentTimestamp : number ) : number => {
+       const oneHourInMilliseconds : number  = 3600000;
+       const futureTimestamp : number =  currentTimestamp + oneHourInMilliseconds;
+       const futureTimestampInSeconds : number = futureTimestamp / 1000;
+       return Math.floor(futureTimestampInSeconds);
+    };
+
+    const iat = new Date().getTime() ;
+    const exp = setExpInSecondsSinceEpoch(iat);
+    return sign( {exp, profileId, profileEmail}, 'secret');
 }
 
 export function setActivationToken () : string {
   return crypto.randomBytes(16).toString('hex');
 }
+
 
 export async function setPassword (password: string) : Promise<string> {
   return argon2.hash(
@@ -31,14 +35,7 @@ export async function setPassword (password: string) : Promise<string> {
     });
 }
 
-export const getTokenFromHeaders = (request : Request) => {
-  const { headers: { authorization } } = request;
 
-  if (authorization && authorization.split(' ')[0] === 'Token') {
-    return authorization.split(' ')[1];
-  }
-  return null;
-};
 
 export async function validatePassword (hash: string, password: string) : Promise<boolean> {
   return argon2.verify(
