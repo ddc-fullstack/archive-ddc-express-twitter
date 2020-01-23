@@ -9,6 +9,7 @@ import { Status } from '../interfaces/Status';
 const { validationResult } = require('express-validator');
 
 export async function getAllTweets (request: Request, response: Response): Promise<Response | void> {
+  console.log(request);
   try {
     // Open DB connection
     const mysqlConnection = await connect();
@@ -31,7 +32,7 @@ export async function insertTweet (request: Request, response: Response) {
     const tweetProfileId = '3e903a1f-fd32-42d0-b97b-e4d4a923b6d5';
     const tweet: Tweet = { tweetId: null, tweetProfileId: tweetProfileId, tweetContent: tweetContent, tweetDate: tweetDate };
     const mysqlConnection = await connect();
-    await mysqlConnection.execute('INSERT INTO tweet(tweetId, tweetProfileId, tweetContent, tweetDate) VALUES( UUID_TO_BIN(UUID()) :tweetProfileId, :tweetContent, :tweetDate)', tweet);
+    await mysqlConnection.execute('INSERT INTO tweet(tweetId, tweetProfileId, tweetContent, tweetDate) VALUES( UUID_TO_BIN(UUID()), :tweetProfileId, :tweetContent, :tweetDate)', tweet);
     const status : Status = {
       status: 200,
       message: 'Tweet successfully created',

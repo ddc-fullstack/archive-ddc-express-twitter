@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import IndexRoutes from './routes/index.route';
 import { SignInRouter } from './routes/sign-in.route';
 import { passportMiddleware } from './lib/auth.controller';
+const session = require("express-session");
 import passport = require('passport');
 
 // The following class creates the app and instantiates the server
@@ -31,6 +32,7 @@ export class App {
     // private method to setting up the middleware to handle json responses, one for dev and one for prod
     private middlewares () {
       this.app.use(morgan('dev'));
+      this.app.use(session({secret:"secret", saveUninitialized: true, resave: true}));
       this.app.use(express.json());
       this.app.use(passport.initialize());
     }
