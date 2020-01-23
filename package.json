@@ -30,6 +30,7 @@
   "author": "George Kephart",
   "license": "Apache-2.0",
   "dependencies": {
+    "@types/jsonwebtoken": "^8.3.7",
     "argon2": "^0.25.1",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",

@@ -10,7 +10,6 @@ const { validationResult } = require('express-validator');
 
 export async function signIn(request : Request, response: Response, nextFunction : NextFunction) {
 
-
     try{
         validationResult(request).throw();
 
@@ -21,12 +20,21 @@ export async function signIn(request : Request, response: Response, nextFunction
             {session: false},
             async (err: any, passportUser: Profile) => {
 
+                const {profileId, profileEmail} = passportUser
+
                 const signInSuccessful = () => {
-                    response.header({"X-JWT-TOKEN": generateJwt(passportUser)});
+                    response.header({
+                        "X-JWT-TOKEN": generateJwt({profileId, profileEmail})
+                    });
+
                     return response.json({status:200, data:null, message: "sign in successful"})
                 };
 
-                const signInFailed = () => response.json({status: 400, data:null, message: "incorrect username or password"});
+                const signInFailed = () => response.json({
+                    status: 400,
+                    data:null,
+                    message: "incorrect username or password"
+                });
 
                 const isPasswordValid : boolean = passportUser && await validatePassword(passportUser.profileHash, profilePassword);
 

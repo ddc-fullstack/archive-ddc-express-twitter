@@ -5,9 +5,7 @@ import * as argon2 from 'argon2';
 const crypto = require('crypto');
 const {sign} = require('jsonwebtoken');
 
-export function generateJwt (profile : Profile) : any {
-    const {profileId, profileEmail} = profile;
-
+export function generateJwt (payload : object) : any {
     const setExpInSecondsSinceEpoch = (currentTimestamp : number ) : number => {
        const oneHourInMilliseconds : number  = 3600000;
        const futureTimestamp : number =  currentTimestamp + oneHourInMilliseconds;
@@ -17,13 +15,12 @@ export function generateJwt (profile : Profile) : any {
 
     const iat = new Date().getTime() ;
     const exp = setExpInSecondsSinceEpoch(iat);
-    return sign( {exp, profileId, profileEmail}, 'secret');
+    return sign( {exp, ...payload}, 'secret');
 }
 
 export function setActivationToken () : string {
   return crypto.randomBytes(16).toString('hex');
 }
-
 
 export async function setPassword (password: string) : Promise<string> {
   return argon2.hash(
@@ -34,8 +31,6 @@ export async function setPassword (password: string) : Promise<string> {
       hashLength: 32
     });
 }
-
-
 
 export async function validatePassword (hash: string, password: string) : Promise<boolean> {
   return argon2.verify(
