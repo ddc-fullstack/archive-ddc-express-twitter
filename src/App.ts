@@ -29,10 +29,19 @@ export class App {
       this.app.set('port', this.port || process.env.PORT || 3000);
     }
 
+
     // private method to setting up the middleware to handle json responses, one for dev and one for prod
     private middlewares () {
+
+      const sessionConfig  =  {
+        secret:"secret",
+        saveUninitialized: true,
+        resave: true,
+        maxAge: "3h"
+      };
+
       this.app.use(morgan('dev'));
-      this.app.use(session({secret:"secret", saveUninitialized: true, resave: true}));
+      this.app.use(session(sessionConfig));
       this.app.use(express.json());
       this.app.use(passport.initialize());
     }
