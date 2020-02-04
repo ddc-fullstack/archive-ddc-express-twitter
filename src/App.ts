@@ -1,7 +1,9 @@
-import express, { Application } from 'express';
+import express, {Application, NextFunction, Request, Response} from 'express';
 import TweetRoute from './routes/tweet.route';
 import SignupRoute from './routes/signup.route';
 import morgan from 'morgan';
+import CookieParser from "cookie-parser";
+import csurf from "csurf"
 
 // Routes
 import IndexRoutes from './routes/index.route';
@@ -9,14 +11,12 @@ import { SignInRouter } from './routes/sign-in.route';
 import { passportMiddleware } from './lib/auth.controller';
 const session = require("express-session");
 import passport = require('passport');
+import {Status} from "./interfaces/Status";
 
 // The following class creates the app and instantiates the server
 export class App {
     app: Application;
-
-    constructor (
-        private port?: number | string
-    ) {
+    constructor(private port?: number | string) {
       passportMiddleware; // eslint-disable-line
       this.app = express();
       this.settings();
@@ -42,12 +42,33 @@ export class App {
 
       this.app.use(morgan('dev'));
       this.app.use(session(sessionConfig));
+      this.app.use(csurf({cookie:false}));
+      this.app.use(function (err : any, req: Request, res: Response, next: NextFunction) {
+        console.log(req.headers);
+
+        if (err.code !== 'EBADCSRFTOKEN') return next(err)
+
+        // handle CSRF token errors here
+        res.status(403);
+
+        const status : Status = {status:418, data: null, message:"trying to brew coffee with a teapot"};
+        res.json(status)
+      });
       this.app.use(express.json());
       this.app.use(passport.initialize());
     }
 
     // private method for setting up routes in their basic sense (ie. any route that performs an action on profiles starts with /profiles)
     private routes () {
+      this.app.all('*', function (req, res, next,) {
+
+        const xsrfSecret: string = req?.session?.csrfSecret ?? undefined;
+
+        if (xsrfSecret) {
+          res.header('XSRF-TOKEN', xsrfSecret)
+        }
+        next();
+      });
       this.app.use(IndexRoutes);
       this.app.use('/apis/tweet', TweetRoute);
       this.app.use('/apis/sign-up', SignupRoute);

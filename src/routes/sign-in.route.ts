@@ -6,7 +6,11 @@ import {signIn} from "../controllers/sign-in.controller";
 
 const { checkSchema } = require('express-validator');
 
+import csurf from "csurf"
+
+const csrf = csurf({cookie: false});
+
 export const SignInRouter = Router();
 
 SignInRouter.route('/')
-  .post(asyncValidator(checkSchema(signInValidator)), signIn);
+  .post(csrf,asyncValidator(checkSchema(signInValidator)), signIn);
