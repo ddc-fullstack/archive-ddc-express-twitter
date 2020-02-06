@@ -13,6 +13,7 @@ export async function getAllTweets (request: Request, response: Response): Promi
 
 
   try {
+    console.info(request?.sessionID);
 
     const profile : Profile|string = request.session?.profile ?? "No user signed in";
 

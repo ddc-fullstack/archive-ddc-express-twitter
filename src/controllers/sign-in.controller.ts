@@ -20,6 +20,8 @@ export async function signIn(request: Request, response: Response, nextFunction:
       {session: false},
       async (err: any, passportUser: Profile) => {
 
+        console.log(request?.sessionID);
+
         const {profileId, profileEmail} = passportUser;
 
         const signInSuccessful = () => {

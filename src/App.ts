@@ -9,6 +9,7 @@ import { SignInRouter } from './routes/sign-in.route';
 import { passportMiddleware } from './lib/auth.controller';
 const session = require("express-session");
 import passport = require('passport');
+var MemoryStore = require('memorystore')(session)
 
 // The following class creates the app and instantiates the server
 export class App {
@@ -34,6 +35,9 @@ export class App {
     private middlewares () {
 
       const sessionConfig  =  {
+        store: new MemoryStore({
+          checkPeriod: 10800
+        }),
         secret:"secret",
         saveUninitialized: true,
         resave: true,
@@ -44,6 +48,7 @@ export class App {
       this.app.use(session(sessionConfig));
       this.app.use(express.json());
       this.app.use(passport.initialize());
+      this.app.use(passport.session());
     }
 
     // private method for setting up routes in their basic sense (ie. any route that performs an action on profiles starts with /profiles)
