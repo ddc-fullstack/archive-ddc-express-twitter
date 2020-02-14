@@ -12,7 +12,7 @@ export function isLoggedIn(request: Request, response: Response, next: NextFunct
     const isSessionActive : boolean = isProfileSessionActive ? true : false;
 
     const getJwtTokenFromHeader = (headers: any): string => {
-        return headers["x-jwt-token"];
+        return headers["authorization"];
     };
     const unverifiedJwtToken: string = getJwtTokenFromHeader(request.headers);
 
