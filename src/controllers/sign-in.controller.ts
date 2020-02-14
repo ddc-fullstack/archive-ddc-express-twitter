@@ -24,14 +24,17 @@ export async function signIn(request: Request, response: Response, nextFunction:
 
         const {profileId, profileEmail} = passportUser;
 
+        const authorization = generateJwt({profileId, profileEmail})
+
         const signInSuccessful = () => {
 
           if (request.session) {
             request.session.profile = passportUser;
+            request.session.jwt = authorization;
           }
 
           response.header({
-            "X-JWT-TOKEN": generateJwt({profileId, profileEmail})
+            authorization
           });
 
           return response.json({status: 200, data: null, message: "sign in successful"})
