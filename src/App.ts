@@ -9,7 +9,9 @@ import { SignInRouter } from './routes/sign-in.route';
 import { passportMiddleware } from './lib/auth.controller';
 const session = require("express-session");
 import passport = require('passport');
+import {SignOutRoute} from "./routes/sign-out.route";
 var MemoryStore = require('memorystore')(session)
+
 
 // The following class creates the app and instantiates the server
 export class App {
@@ -55,8 +57,10 @@ export class App {
     private routes () {
       this.app.use(IndexRoutes);
       this.app.use('/apis/tweet', TweetRoute);
-      this.app.use('/apis/sign-up', SignupRoute);
       this.app.use('/apis/sign-in', SignInRouter);
+      this.app.use("/apis/sign-out", SignOutRoute);
+      this.app.use('/apis/sign-up', SignupRoute);
+
     }
 
     // starts the server and tells the terminal to post a message that the server is running and on what port
