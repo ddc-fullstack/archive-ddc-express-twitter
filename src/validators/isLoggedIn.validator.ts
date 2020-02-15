@@ -9,7 +9,9 @@ export function isLoggedIn(request: Request, response: Response, next: NextFunct
 
     let status : Status = {status: 400, message: "Please login", data: null};
 
-    const sessionProfile : Profile | undefined = request.session?.profile ?? undefined;
+    const sessionProfile  = (request : Request): Profile | undefined => request.session?.profile ?? undefined;
+
+    const signature = (request : Request) : string => request.session?.signature ?? "no signature"
 
     const isSessionActive = (isProfileActive: Profile| undefined) : boolean => isProfileActive ? true : false;
 
@@ -22,13 +24,13 @@ export function isLoggedIn(request: Request, response: Response, next: NextFunct
     const isJwtValid: any = unverifiedJwtToken
       ? verify(
             unverifiedJwtToken,
-            "secret",
+            signature(request),
             {maxAge: "3hr"},
             (error: any, decoded: any) => error ? false : true
         )
       : false;
 
-    return isJwtValid && isSessionActive(sessionProfile) ? next() : response.json(status);
+    return isJwtValid && isSessionActive(sessionProfile(request)) ? next() : response.json(status);
 }
 
 
