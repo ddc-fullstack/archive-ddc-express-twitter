@@ -1,17 +1,20 @@
 import {NextFunction, Request, Response} from 'express';
 import {JsonWebTokenError, TokenExpiredError, verify, } from "jsonwebtoken";
 import {Status} from "../interfaces/Status";
+import {Profile} from "../interfaces/Profile";
+
 
 
 export function isLoggedIn(request: Request, response: Response, next: NextFunction): any {
 
     let status : Status = {status: 400, message: "Please login", data: null};
 
-    const isProfileSessionActive = request.session?.profile ?? undefined;
+    const sessionProfile : Profile | undefined = request.session?.profile ?? undefined;
 
-    const isSessionActive : boolean = isProfileSessionActive ? true : false;
+    const isSessionActive = (isProfileActive: Profile| undefined) : boolean => isProfileActive ? true : false;
 
-    const getJwtTokenFromHeader = (headers: any): string => {
+
+    const getJwtTokenFromHeader  = (headers: any): string => {
         return headers["authorization"];
     };
     const unverifiedJwtToken: string = getJwtTokenFromHeader(request.headers);
@@ -25,7 +28,7 @@ export function isLoggedIn(request: Request, response: Response, next: NextFunct
         )
       : false;
 
-    return isJwtValid && isSessionActive ? next() : response.json(status);
+    return isJwtValid && isSessionActive(sessionProfile) ? next() : response.json(status);
 }
 
 

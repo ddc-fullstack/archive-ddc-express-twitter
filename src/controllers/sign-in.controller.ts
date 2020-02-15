@@ -4,6 +4,7 @@ import {generateJwt, validatePassword} from "../lib/auth.utils";
 import {Profile} from "../interfaces/Profile";
 
 const passport = require("passport");
+import uuid from "uuid";
 const {validationResult} = require('express-validator');
 
 
@@ -20,17 +21,19 @@ export async function signIn(request: Request, response: Response, nextFunction:
       {session: false},
       async (err: any, passportUser: Profile) => {
 
-        console.log(request?.sessionID);
-
         const {profileId, profileEmail} = passportUser;
 
-        const authorization = generateJwt({profileId, profileEmail})
+        const signature : string = uuid();
+
+
+        const authorization : string = generateJwt({profileId, profileEmail}, signature);
 
         const signInSuccessful = () => {
 
           if (request.session) {
             request.session.profile = passportUser;
             request.session.jwt = authorization;
+            request.session.signature = signature;
           }
 
           response.header({
