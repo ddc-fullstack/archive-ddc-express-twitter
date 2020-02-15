@@ -3,11 +3,13 @@ import { Status } from '../interfaces/Status';
 import {Request, Response} from "express";
 
 export function signOut(request: Request, response : Response) {
-  const status : Status = {status: 200, message: "sign out successful", data: null};
-  const session : any = request.session?.profile ?? undefined;
+  let status : Status = {status: 200, message: "sign out successful", data: null};
+  const {session}  = request;
 
   const executeSignOut = () => {
-    console.log(session);
+    // @ts-ignore: broken typing is requiring a callback function that is optional.
+    session?.destroy()
+
   };
 
   const signOutFailed = () => {
