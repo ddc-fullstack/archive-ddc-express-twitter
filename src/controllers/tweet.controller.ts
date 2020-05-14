@@ -13,7 +13,6 @@ export async function getAllTweets (request: Request, response: Response): Promi
 
 
   try {
-    console.info(request?.sessionID);
 
     const profile : Profile|string = request.session?.profile ?? "No user signed in";
 
@@ -21,10 +20,10 @@ export async function getAllTweets (request: Request, response: Response): Promi
     const mysqlConnection = await connect();
     // Query the connection
 
-   // const [rows] = await mysqlConnection.execute('SELECT BIN_TO_UUID(tweetId) AS tweetId, BIN_TO_UUID (tweetProfileId) AS tweetProfileId, tweetContent, tweetDate FROM tweet');
-    // return the response
+    const [rows] = await mysqlConnection.execute('SELECT BIN_TO_UUID(tweetId) AS tweetId, BIN_TO_UUID (tweetProfileId) AS tweetProfileId, tweetContent, tweetDate FROM tweet');
 
-    const status : Status = { status: 200, message: null, data: profile };
+    // return the response
+    const status : Status = { status: 200, message: null, data: rows};
     return response.json(status);
   } catch (error) {
     console.log(error);

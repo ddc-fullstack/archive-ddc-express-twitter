@@ -5,7 +5,7 @@ import * as argon2 from 'argon2';
 const crypto = require('crypto');
 const {sign} = require('jsonwebtoken');
 
-export function generateJwt (payload : object) : any {
+export function generateJwt (payload : object, signature : string) : any {
     const setExpInSecondsSinceEpoch = (currentTimestamp : number ) : number => {
        const oneHourInMilliseconds : number  = 3600000;
        const futureTimestamp : number =  currentTimestamp + oneHourInMilliseconds;
@@ -15,7 +15,7 @@ export function generateJwt (payload : object) : any {
 
     const iat = new Date().getTime() ;
     const exp = setExpInSecondsSinceEpoch(iat);
-    return sign( {exp, ...payload}, 'secret');
+    return sign( {exp, ...payload}, signature);
 }
 
 export function setActivationToken () : string {

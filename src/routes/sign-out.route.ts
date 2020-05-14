@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import {SignInRouter} from "./sign-in.route";
+import {signOut} from "../controllers/sign-out.controller";
 
-export const signOutRoute = Router();
+export const SignOutRoute = Router();
 
-signOutRoute.route("/")
-  .get(signout())
+SignOutRoute.route("/")
+  .get(signOut);

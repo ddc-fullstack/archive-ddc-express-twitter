@@ -1,25 +1,24 @@
 import { Tweet } from '../interfaces/Tweet';
 import { Status } from '../interfaces/Status';
-import {Request} from "express";
+import {Request, Response} from "express";
 
 export function signOut(request: Request, response : Response) {
-  const status : Status = {status: 200, message: "sign out successful", data: null};
-  const session : any = request.session ?? undefined;
+  let status : Status = {status: 200, message: "sign out successful", data: null};
+  const {session}  = request;
 
   const executeSignOut = () => {
-    session.distroy()
+    // @ts-ignore: broken typing is requiring a callback function that is optional.
+    session?.destroy()
+
   };
 
-  const signOutFailed =
-  session ? session.distroy()  : status.message = "No active session";
+  const signOutFailed = () => {
+    status.status = 400;
+    status.message = "you are not signed in";
+  };
 
+  session ? executeSignOut() : signOutFailed();
 
-
-
-
-
-
-
-
+  return response.json(status)
 }
 
