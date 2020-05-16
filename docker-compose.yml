@@ -4,7 +4,7 @@ services:
   sql:
     build: ./sql
     volumes:
-      - passport-local:/var/lib/mysql
+      - ddc-twitter:/var/lib/mysql
     env_file:
       - ./.env
     command: --default-authentication-plugin=mysql_native_password
@@ -20,7 +20,5 @@ services:
     volumes:
       - ./backend/src:/home/node/app/src
       - ./backend/tsconfig.json:/home/node/app/tsconfig.json
-
-
 volumes:
-  passport-local:
+  ddc-twitter:
