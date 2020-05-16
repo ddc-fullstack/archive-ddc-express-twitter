@@ -42,5 +42,3 @@
 The routes are formed as follows:
 http://`[server]`:`[port]`/api /`[object]`/`[how we want to get it]`:`[param]`
 
-
-docker exec -i ddc-javascript-twitter_sql mysql -u ddctwitter -p deepdive  ddctwitter < sql/db.sql
