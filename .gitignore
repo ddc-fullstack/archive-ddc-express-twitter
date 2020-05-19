@@ -1,6 +1,6 @@
 */src/dist
 */node_modules
-*/.idea
+.idea
 */.Ds_Store
 
 */.pnp
