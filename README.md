@@ -1,3 +1,8 @@
+# ARCHIVED
+
+**This repo is no longer the current version of this code.  For updated code, go to https://github.com/Deep-Dive-Coding-Fullstack-Licensing/example-capstone**
+
+
 # DDC Twitter
 ## Set Up
 **The following files are required to start a new project based on this code base**
