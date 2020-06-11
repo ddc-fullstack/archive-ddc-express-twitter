@@ -22,7 +22,7 @@ export function setActivationToken () : string {
   return crypto.randomBytes(16).toString('hex');
 }
 
-export async function setPassword (password: string) : Promise<string> {
+export async function setHash(password: string) : Promise<string> {
   return argon2.hash(
     password,
     {

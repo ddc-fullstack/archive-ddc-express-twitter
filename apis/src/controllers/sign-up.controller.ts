@@ -5,7 +5,7 @@ import { connect } from '../database';
 // Interfaces (represent the DB model and types of the columns associated with a specific DB table)
 import { Profile } from '../interfaces/Profile';
 import { Status } from '../interfaces/Status';
-import { setActivationToken, setPassword } from '../lib/auth.utils';
+import { setActivationToken, setHash } from '../lib/auth.utils';
 
 const { validationResult } = require('express-validator');
 
@@ -17,7 +17,7 @@ export async function signupProfile (request: Request, response: Response) {
 
     const mysqlConnection = await connect();
 
-    const profileHash = await setPassword(profilePassword);
+    const profileHash = await setHash(profilePassword);
 
     const profileActivationToken = setActivationToken();
 
